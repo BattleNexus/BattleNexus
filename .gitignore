@@ -1,0 +1,11 @@
+/bootstrap/compiled.php
+/vendor
+/app/config/production
+composer.phar
+composer.lock
+.DS_Store
+atlassian-ide-plugin.xml
+.idea
+_ide_helper.php
+app/config/local/
+*.iml
