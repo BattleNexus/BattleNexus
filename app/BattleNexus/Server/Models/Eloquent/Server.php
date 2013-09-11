@@ -56,6 +56,6 @@ class Server extends \Eloquent implements ServerInterface
 
 	public function getThumbUrl()
 	{
-		return $this->thumb_url;
+		return $this->getImageUrl();
 	}
 }

@@ -10,6 +10,13 @@ interface BattleServerRepositoryInterface
 	public function all();
 
 	/**
+	 * Returns all servers that a user owns
+	 *
+	 * @return \BattleNexus\BattleServer\Models\BattleServerInterface[]
+	 */
+	public function allUserOwns();
+
+	/**
 	 * Creates a new BattleServer
 	 *
 	 * @param $attributes

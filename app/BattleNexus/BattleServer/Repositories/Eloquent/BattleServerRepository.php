@@ -1,14 +1,17 @@
 <?php namespace BattleNexus\BattleServer\Repositories\Eloquent;
 
 use BattleNexus\BattleServer\Models\Eloquent\BattleServer;
+use Cartalyst\Sentry\Sentry;
 
 class BattleServerRepository implements \BattleNexus\BattleServer\Repositories\BattleServerRepositoryInterface
 {
 	protected $server;
+	protected $sentry;
 
-	public function __construct(BattleServer $server)
+	public function __construct(BattleServer $server, Sentry $user)
 	{
 		$this->server = $server;
+		$this->sentry = $user;
 	}
 
 	/**
@@ -19,6 +22,16 @@ class BattleServerRepository implements \BattleNexus\BattleServer\Repositories\B
 	public function all()
 	{
 		return $this->server->all();
+	}
+
+	/**
+	 * Returns all servers that a user owns
+	 *
+	 * @return \BattleNexus\BattleServer\Models\BattleServerInterface[]
+	 */
+	public function allUserOwns()
+	{
+		return $this->server->where('user_id', $this->sentry->getUser()->getId());
 	}
 
 	/**

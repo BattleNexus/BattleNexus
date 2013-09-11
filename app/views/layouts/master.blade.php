@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>@yield('title') | BattleNexus</title>
 
 		<link href="{{ URL::asset('css/bootstrap.css') }}" rel="stylesheet">
@@ -23,5 +24,8 @@
 		<script src="{{ URL::asset('js/spin.js') }}"></script>
 		<script src="{{ URL::asset('js/ladda.js') }}"></script>
 		<script src="{{ URL::asset('js/bn.js') }}"></script>
+
+		@yield('js')
+
 	</body>
 </html>

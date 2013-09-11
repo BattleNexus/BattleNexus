@@ -2,16 +2,13 @@
 
 use BattleNexus\User\Repositories\Eloquent\UserRepository;
 use Cartalyst\Sentry\Sentry;
+use Cartalyst\Sentry\Throttling\UserBannedException;
+use Cartalyst\Sentry\Throttling\UserSuspendedException;
+use Cartalyst\Sentry\Users\UserNotFoundException;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 
 class UserController extends \BaseController {
-
-	protected $sentry;
-
-	public function __construct(Sentry $sentry)
-	{
-		$this->sentry = $sentry;
-	}
 
 	/**
 	 * Display a listing of the resource.
@@ -36,39 +33,75 @@ class UserController extends \BaseController {
 	}
 
 	/**
+	 * Show the form for logging in
+	 */
+	public function login()
+	{
+		$this->layout->content = \View::make('users.login');
+	}
+
+	/**
+	 * Authorize the user logging in
+	 */
+	public function authorize()
+	{
+		$input = \Input::input();
+
+		$validator = \Validator::make($input, [
+			'email' => 'required',
+			'password' => 'required',
+		]);
+
+		if ($validator->fails()) {
+			return \Redirect::route('user.login')->withInput()->withErrors($validator->messages());
+		}
+
+		try {
+			$this->sentry->authenticate(['email' => \Input::input('email'), 'password' => \Input::input('password')], \Input::input('rememberme'));
+
+			return \Redirect::intended('/');
+		} catch (UserBannedException $e) {
+			return \Redirect::route('user.login')->withErrors(['This account has been permanently banned.']);
+		} catch (UserSuspendedException $e) {
+			return \Redirect::route('user.login')->withErrors(['This account has been temporarily suspended.']);
+		} catch (UserNotFoundException $e) {
+			return \Redirect::route('user.login')->withErrors(['Welp, it seems like you\'ve given the wrong email or password. I can\'t seem to locate your user.'])->withInput();
+		}
+	}
+
+	/**
 	 * Store a newly created resource in storage.
 	 *
 	 * @return \Response
 	 */
 	public function store()
 	{
-		// TODO: Make POST /register alias to this
-		$input = \Input::query();
+		$input = \Input::input();
 
 		$validator = \Validator::make($input, [
 			'username' => 'required|unique:users,username',
 			'email' => 'required|unique:users,email',
-			'password' => 'confirmed',
+			'password' => 'required|confirmed',
+			'password_confirmation' => 'required',
+			'tos' => 'accepted'
 		]);
 
 		if ($validator->fails()) {
-			return \Redirect::to('user.create')->withInput()->withErrors($validator->messages());
+			return \Redirect::route('user.create')->withInput()->withErrors($validator->messages());
 		}
 
-		try {
-			$user = $this->sentry->createUser([
-				'username' => \Input::input('username'),
-				'email'    => \Input::input('email'),
-				'password' => \Input::input('password'),
-				'ip_address' => $_SERVER['REMOTE_ADDR'],
-			]);
+		$user = $this->sentry->createUser([
+			'username' => \Input::input('username'),
+			'email'    => \Input::input('email'),
+			'password' => \Input::input('password'),
+			'ip_address' => $_SERVER['REMOTE_ADDR'],
+		]);
 
-			$user->addGroup($this->sentry->findGroupByName('Member'));
+		$user->addGroup($this->sentry->findGroupByName('Member'));
 
-			\Event::fire('user.create', $user);
-		} catch ( \Exception $e ) {
-			\App::abort(500);
-		}
+		\Event::fire('user.store', $user);
+
+		return \Redirect::intended('/');
 	}
 
 	/**

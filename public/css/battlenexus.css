@@ -1,39 +1,95 @@
-/*
 html, body {
-    background: #0b0b0b url("../img/bg.png") center no-repeat;
+    height: 100%;
+    background: #0b0b0b url("../img/bg.png") center 52px no-repeat;
+    /*background: url("../img/bg-3.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;*/
 }
 
 body {
     height: 100%;
-    background: none;
-}*/
+/*    background: none;*/
+}
 
-html, body {
-    background: #0b0b0b;
+#server-title {
+    margin-top: 13px;
 }
 
 .no-break {
     display:inline;
 }
 
-#server-image {
-    width: 100%;
+#articles > .panel > .panel-heading > .panel-title {
+    font-size: 16pt;
+    cursor: pointer;
 }
 
-/*
-#main-nav .navbar-nav > li > a {
-    font-size: 15pt;
-    padding-top: 23px;
-    padding-bottom: 23px;
-}*/
-/*
-
-#user-interaction > li {
-    padding-top: 20px;
-}
-
-#user-interaction > li > .btn {
-    height: 20px;
+#articles > .panel > .panel-heading > a {
     color: #FFFFFF;
 }
-*/
+
+#articles > .panel > .panel-body > h3 {
+    margin-top: 0;
+}
+
+#articles > .panel > .panel-body > p {
+    color: #FFFFFF;
+}
+
+#articles > .panel > .panel-footer {
+    height: 30px;
+    padding-top: 4px;
+}
+
+/*.server-panel > .server-image {
+    height: 75px;
+    overflow: hidden;
+}*/
+
+.server-panel > a > .server-image {
+    height: 75px;
+    background-position: -100px -150px;
+}
+
+/*.server-panel > .server-image > img {
+    height: 75px;
+    width: 100%;
+    display: inline;
+}*/
+
+.server-panel > .panel-body {
+    padding: 10px;
+}
+
+.server-panel > .panel-body > p {
+    margin: 0;
+    display: inline;
+}
+
+.server-panel > .panel-footer {
+    background-color: #222222;
+}
+
+
+/** USER GROUPS **/
+
+
+.admin {
+    color: #ff3a24;
+}
+
+.moderator {
+    color: #0bff00;
+}
+
+/** MISC BOOTSTRAP CHANGES **/
+
+.text-danger {
+    color: #ff0d00;
+}
+
+.affix {
+    float: right;
+}

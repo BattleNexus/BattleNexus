@@ -114,10 +114,12 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
+		'BattleNexus\BattleServer\BattleServerServiceProvider',
 		'BattleNexus\Server\ServerServiceProvider',
 		'BattleNexus\User\UserServiceProvider',
 
 		'Cartalyst\Sentry\SentryServiceProvider',
+		'Mews\Thumb\ThumbServiceProvider',
 
 	),
 
@@ -184,7 +186,8 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 
-		'Sentry'          => 'Cartalyst\Sentry\Facades\Laravel\Sentry'
+		'Sentry'          => 'Cartalyst\Sentry\Facades\Laravel\Sentry',
+		'Thumb'           => 'Mews\Thumb\Facades\Thumb',
 	),
 
 );
