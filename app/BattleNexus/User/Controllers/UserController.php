@@ -101,7 +101,7 @@ class UserController extends \BaseController {
 
 		\Event::fire('user.store', $user);
 
-		return \Redirect::intended('/');
+		return \Redirect::to('/');
 	}
 
 	/**
