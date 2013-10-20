@@ -17,10 +17,6 @@ class ServerController extends \BaseController
 	// battlenexus.net/servers
 	public function index()
 	{
-		\Cache::rememberForever('servers', function() {
-			return $this->server->all();
-		});
-
 		$this->layout->content = \View::make('servers.index')->with('servers', $this->server->all());
 	}
 
